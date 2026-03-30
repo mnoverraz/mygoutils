@@ -10,6 +10,9 @@ import (
 	"github.com/mnoverraz/mygoutils/system"
 )
 
+// WriteFile take a pathFile in arg and create the
+// directories if not exists and write the content in buf
+// in the file
 func WriteFile(buf []byte, pathFile string) error {
 	path := filepath.Dir(pathFile)
 	filename := filepath.Base(pathFile)
