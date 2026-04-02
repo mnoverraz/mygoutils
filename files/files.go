@@ -26,7 +26,6 @@ func WriteFile(buf []byte, pathFile string) error {
 }
 
 func MarkdownToPDF(markdownFilePath string) error {
-
 	// confirm that pandoc exist on the device
 	if system.CommandExists("pandoc") == false {
 		return fmt.Errorf("pandoc is not on the system. Try to install it with\n  - brew install pandoc")
