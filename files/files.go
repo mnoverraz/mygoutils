@@ -3,12 +3,15 @@ package files
 import (
 	"archive/zip"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 
 	"github.com/mnoverraz/mygoutils/system"
+	"github.com/schollz/progressbar/v3"
 )
 
 // WriteFile take a pathFile in arg and create the
@@ -24,6 +27,47 @@ func WriteFile(buf []byte, pathFile string) error {
 
 	file := filepath.Join(path, filename)
 	return os.WriteFile(file, buf, 0600)
+}
+
+// GetLargeFileFromURL write on disk to targetFilename
+func GetLargeFileFromURL(url string, filePath string) error {
+	//url = "https://deac-riga.dl.sourceforge.net/project/clonezilla/clonezilla_live_stable/3.3.1-35/clonezilla-live-3.3.1-35-amd64.zip?viasf=1"
+	// Send a GET request to the API
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Printf("Error occurred: %v\n", err)
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Progress Bar
+
+	// Check for HTTP errors
+	if resp.StatusCode != http.StatusOK {
+		fmt.Printf("HTTP error occurred: %s\n", resp.Status)
+		return err
+	}
+
+	// Open the local file in binary write mode
+	file, err := os.Create(filePath)
+	if err != nil {
+		fmt.Printf("Error creating file: %v\n", err)
+		return err
+	}
+	defer file.Close()
+
+	// Progress bar
+	bar := progressbar.DefaultBytes(
+		resp.ContentLength,
+		"Downloading",
+	)
+
+	// Copy the response body to the file in chunks
+	_, err = io.Copy(io.MultiWriter(file, bar), resp.Body)
+	if err != nil {
+		fmt.Printf("Error writing to file: %v\n", err)
+	}
+	return nil
 }
 
 func MarkdownToPDF(markdownFilePath string) error {
