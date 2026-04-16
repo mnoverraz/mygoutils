@@ -109,6 +109,11 @@ func MarkdownToPDF(markdownFilePath string) error {
 	}
 	return nil
 }
+
+func GetFilenameFromPath(path string) string {
+	return filepath.Base(path)
+}
+
 // Unzip unzip the src into dest
 func Unzip(src, dest string) error {
 	dest = filepath.Clean(dest) + string(os.PathSeparator)
