@@ -34,14 +34,3 @@ func UppercaseFirstLetter(s string) string {
 	return upperString
 
 }
-
-func (s String) Test() {}
-
-func Coucou() {}
-
-func Coucou2() {}
-
-func Coucou3() {}
-
-type String struct {
-}
