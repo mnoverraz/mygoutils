@@ -29,6 +29,21 @@ func WriteFile(buf []byte, pathFile string) error {
 	return os.WriteFile(file, buf, 0600)
 }
 
+func AppendToFile(dataToAppend []byte, filePath string) error {
+	// If the file doesn't exist, create it, or append to the file
+	f, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	if _, err := f.Write(dataToAppend); err != nil {
+		return err
+	}
+	if err := f.Close(); err != nil {
+		return err
+	}
+	return nil
+}
+
 // GetLargeFileFromURL write on disk to targetFilename
 func GetLargeFileFromURL(url string, filePath string) error {
 	//url = "https://deac-riga.dl.sourceforge.net/project/clonezilla/clonezilla_live_stable/3.3.1-35/clonezilla-live-3.3.1-35-amd64.zip?viasf=1"
