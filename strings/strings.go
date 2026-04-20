@@ -3,6 +3,10 @@ package strings
 import (
 	"strings"
 	"unicode"
+
+	"golang.org/x/text/runes"
+	"golang.org/x/text/transform"
+	"golang.org/x/text/unicode/norm"
 )
 
 func GetFirstnameLastnameFromEmail(email string) (string, string) {
@@ -33,4 +37,14 @@ func UppercaseFirstLetter(s string) string {
 
 	return upperString
 
+}
+
+// NoAccent returns the string without any accent.
+func NoAccent(str string) (string, error) {
+	var normalizer = transform.Chain(norm.NFD, runes.Remove(runes.In(unicode.Mn)), norm.NFC)
+	s, _, err := transform.String(normalizer, str)
+	if err != nil {
+		return "", err
+	}
+	return strings.ToLower(s), err
 }
