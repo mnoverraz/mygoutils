@@ -31,7 +31,7 @@ func WriteFile(buf []byte, pathFile string) error {
 
 func AppendToFile(dataToAppend []byte, filePath string) error {
 	// If the file doesn't exist, create it, or append to the file
-	f, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(filePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		return err
 	}
