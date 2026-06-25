@@ -246,3 +246,16 @@ func FileToMd5(filePath string) (string, error) {
 	}
 	return hex.EncodeToString(hasher.Sum(nil)), nil
 }
+
+func FileExists(file string) bool {
+	if _, err := os.Stat(file); err == nil {
+		return true
+
+	} else if errors.Is(err, os.ErrNotExist) {
+		return false
+
+	} else {
+		// Schrodinger: file may or may not exist. See err for details.
+	}
+	return false
+}
