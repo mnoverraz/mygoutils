@@ -2,6 +2,10 @@ package files
 
 import (
 	"archive/zip"
+	"bufio"
+	"crypto/md5"
+	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -177,5 +181,33 @@ func Unzip(src, dest string) error {
 		}
 	}
 
+	return nil
+}
+
+func WriteInsideFileAfterLine(filepath string, lineToWriteAfter int, insert string) error {
+
+	// Lire le fichier
+	data, err := os.ReadFile(filepath)
+	if err != nil {
+		return err
+	}
+
+	// Découper en lignes
+	lines := strings.Split(string(data), "\n")
+
+	var result []string
+
+	for lineNumber, line := range lines {
+		result = append(result, line)
+		if lineNumber+1 == lineToWriteAfter {
+			result = append(result, insert)
+		}
+	}
+
+	// Réécrire le fichier
+	err = os.WriteFile(filepath, []byte(strings.Join(result, "\n")), 0644)
+	if err != nil {
+		return err
+	}
 	return nil
 }
