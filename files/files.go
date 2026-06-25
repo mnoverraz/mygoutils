@@ -211,3 +211,15 @@ func WriteInsideFileAfterLine(filepath string, lineToWriteAfter int, insert stri
 	}
 	return nil
 }
+
+// Cleanup delete files, paths with children gave in parameters and returns an error
+// if something went wrong
+func Cleanup(paths ...string) error {
+	for i, path := range paths {
+		err := os.RemoveAll(path)
+		if err != nil {
+			return fmt.Errorf("error on the cleanup task %d/%d: %s", i, len(paths), err)
+		}
+	}
+	return nil
+}
