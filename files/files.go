@@ -232,3 +232,17 @@ func VerifyFileFromMd5(file string, expectedHash string) bool {
 	}
 	return strings.EqualFold(actualHashString, expectedHash)
 }
+
+func FileToMd5(filePath string) (string, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+	hasher := md5.New()
+	reader := bufio.NewReaderSize(file, 64) // Buffered reading
+	if _, err := io.Copy(hasher, reader); err != nil {
+		fmt.Println("errr", err)
+	}
+	return hex.EncodeToString(hasher.Sum(nil)), nil
+}
