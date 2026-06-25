@@ -223,3 +223,12 @@ func Cleanup(paths ...string) error {
 	}
 	return nil
 }
+
+func VerifyFileFromMd5(file string, expectedHash string) bool {
+	actualHashString, err := FileToMd5(file)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+	return strings.EqualFold(actualHashString, expectedHash)
+}
