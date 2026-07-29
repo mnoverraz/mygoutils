@@ -89,7 +89,7 @@ func GetLargeFileFromURL(url string, filePath string) error {
 	return nil
 }
 
-func MarkdownToPDF(markdownFilePath string) error {
+func MarkdownToPDF(markdownFilePath string, pandocArgs []string) error {
 	// confirm that pandoc exist on the device
 	if system.CommandExists("pandoc") == false {
 		return fmt.Errorf("pandoc is not on the system. Try to install it with\n  - brew install pandoc")
@@ -104,7 +104,19 @@ func MarkdownToPDF(markdownFilePath string) error {
 
 	outputPdfFilename := filenameWithoutExt + ".pdf"
 
-	cmd := exec.Command("pandoc", markdownFilePath, "-o", filepath.Join(directory, outputPdfFilename), "-f", "markdown-implicit_figures", "--resource-path", directory)
+	//cmd := exec.Command("pandoc", markdownFilePath, "-o", filepath.Join(directory, outputPdfFilename), "-f", "markdown-implicit_figures", "--resource-path", directory)
+	args := []string{
+		markdownFilePath,
+		"-o",
+		filepath.Join(directory, outputPdfFilename),
+		"-f", "markdown-implicit_figures",
+		"--resource-path",
+		directory,
+	}
+	args = append(args, pandocArgs...)
+
+	cmd := exec.Command("pandoc", args...)
+
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
