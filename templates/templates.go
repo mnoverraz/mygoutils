@@ -9,7 +9,8 @@ import (
 
 // New create an HTML template and adds:
 //
-// - sprig (http://masterminds.github.io/sprig/)
+//   - sprig (http://masterminds.github.io/sprig/)
+//   - specials functions https://github.com/mnoverraz/mygoutils/blob/main/templates/templates.go#L18
 func New(name string) *template.Template {
 	return template.New(name).Funcs(sprig.FuncMap()).Funcs(PersoFuncMap())
 }
