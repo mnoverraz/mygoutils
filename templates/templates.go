@@ -25,6 +25,7 @@ func PersoFuncMap() template.FuncMap {
 		"noAccent":             strings.NoAccent,
 		"upperCaseFirstLetter": strings.UppercaseFirstLetter,
 		"isFirstLetterVowel":   isFirstLetterVowel,
+		"lowercaseFirstLetter": strings.LowercaseFirstLetter,
 	}
 }
 

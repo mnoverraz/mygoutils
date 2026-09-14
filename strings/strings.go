@@ -3,6 +3,7 @@ package strings
 import (
 	"strings"
 	"unicode"
+	"unicode/utf8"
 
 	"golang.org/x/text/runes"
 	"golang.org/x/text/transform"
@@ -37,6 +38,14 @@ func UppercaseFirstLetter(s string) string {
 
 	return upperString
 
+}
+
+func LowercaseFirstLetter(s string) string {
+	if s == "" {
+		return s
+	}
+	r, size := utf8.DecodeRuneInString(s)
+	return strings.ToLower(string(r)) + s[size:]
 }
 
 // NoAccent returns the string without any accent.
