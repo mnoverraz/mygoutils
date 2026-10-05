@@ -1,7 +1,9 @@
 package templates
 
 import (
+	"fmt"
 	"html/template"
+	"time"
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/mnoverraz/mygoutils/strings"
@@ -26,6 +28,7 @@ func PersoFuncMap() template.FuncMap {
 		"upperCaseFirstLetter": strings.UppercaseFirstLetter,
 		"isFirstLetterVowel":   isFirstLetterVowel,
 		"lowercaseFirstLetter": strings.LowercaseFirstLetter,
+		"humanDuration":        HumanDuration,
 	}
 }
 
@@ -40,4 +43,31 @@ func isFirstLetterVowel(word string) bool {
 		}
 	}
 	return false
+}
+
+func HumanDuration(d time.Duration) string {
+	days := d / (24 * time.Hour)
+	d -= days * 24 * time.Hour
+
+	hours := d / time.Hour
+	d -= hours * time.Hour
+
+	minutes := d / time.Minute
+	d -= minutes * time.Minute
+
+	seconds := d / time.Second
+
+	if days > 0 {
+		return fmt.Sprintf("%dj %dh %dm", days, hours, minutes)
+	}
+
+	if hours > 0 {
+		return fmt.Sprintf("%dh %dm", hours, minutes)
+	}
+
+	if minutes > 0 {
+		return fmt.Sprintf("%dm %ds", minutes, seconds)
+	}
+
+	return fmt.Sprintf("%ds", seconds)
 }
