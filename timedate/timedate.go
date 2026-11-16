@@ -1,4 +1,4 @@
-package templates
+package timedate
 
 import "time"
 
